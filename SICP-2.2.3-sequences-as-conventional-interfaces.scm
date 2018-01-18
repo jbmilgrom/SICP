@@ -1,23 +1,28 @@
 (define one-four (list 1 2 3 4))
 (define nil '())
 (define tree (list 1 (list 2 (list 3 4) 5) (list 6 7)))
+
 (define (map proc items)
 	(if (null? items)
 		items
 		(cons (proc (car items)) (map proc (cdr items)))))
+
 (define (accumulate op initial sequence)
 	(if (null? sequence)
 	initial
 	(op (car sequence)
 			(accumulate op initial (cdr sequence)))))
+
 (define (divides? a b)
 	(= (remainder a b) 0))
+
 (define (smallest-divisor n)
 	(define (find-divisor n test-diviser)
 		(cond ((divides? n test-diviser) test-diviser)
 			  	((> (square test-diviser) n) n)
 			  	(else (find-divisor n (+ test-diviser 1)))))
 	(find-divisor n 2))
+
 (define (prime? n)
 	(= (smallest-divisor n) n))
 
@@ -65,7 +70,7 @@
 				; Notice how the second and third choices duplicate logic that is already
 				; present in the "non leaf node" logic below
 				(else (append (enumerate-tree (car tree))
-											(enumerate-tree (cdr tree))))))
+						(enumerate-tree (cdr tree))))))
 
 ; ahh much nicer
 (define (count-leaves tree)
