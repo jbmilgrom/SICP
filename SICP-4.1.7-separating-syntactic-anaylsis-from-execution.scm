@@ -21,6 +21,9 @@
 (define (definition? expression) (tagged-list? expression `define))
 
 (define (lambda? expression) (tagged-list? expression `lambda))
+(define (lambda-parameters expression) (cadr expression))
+(define (lambda-body expression) (cddr expression))
+(define (make-lambda) (cons `lambda (cons parameters body)))
 
 (define (application? expression) (pair? expression))
 
@@ -41,6 +44,11 @@
     (eq? (car expression) tag)
     false))
 
+(define (compound-expression? expression) (tagged-list? expression `lambda))
+(define (procedure-parameters) (cadr expression))
+(define (procedure-body) (caddr expression))
+(define (procedure-env (cadddr expression)))
+(define (make-procedure parameters body env) (list `procedure parameters body env))
 
 ; (define my-env `())
 
