@@ -34,15 +34,28 @@
   (lambda (env) (lookup-variable-value expression env)))
 
 (define (analyze-lambda expression)
-  ())
+  (let 
+    ((parameters (lambda-parameters expression))
+      (body (lambda-body expression)))
+    (lambda (env) (make-procedure parameters body env))))
 
 (define (analyze-application expression)
-  ())
+  (lambda (env) ()))
 
 (define (tagged-list? expression tag)
   (if (pair? expression)
     (eq? (car expression) tag)
     false))
+
+(define (execute-application proc args)
+  (cond 
+    ((primitive-procedure? proc) (apply-primitive-procedure proc args))
+    ((compound-procedure? proc)
+      ((procedure-body proc)
+        (extend-environment
+          (procedure-parameters proc)
+          args
+          (procedute-environment proc))))))
 
 (define (compound-expression? expression) (tagged-list? expression `lambda))
 (define (procedure-parameters) (cadr expression))
@@ -53,9 +66,9 @@
 ; (define my-env `())
 
 ; (define (make-frame variables values)
-;   (cons variables values))
+;   (cons variables values))  
 
 ; (define (add-binding-to-frame var val frame)
 ;   (set-car! (cons var (car frame)))
-;   (set=-cdr! (cons val (cdr frame))))
+;   (set-cdr! (cons val (cdr frame))))
 
